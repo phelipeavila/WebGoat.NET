@@ -5,20 +5,20 @@ on:
   workflow_dispatch:
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Setup dotnet
-        uses: actions/setup-dotnet@v3
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.0.2
+
+      - name: Build solution
+        run: msbuild /p:Configuration=Release /p:OutputPath=\bin /p:DeployOnBuild=true /p:WebPublishMethod=FileSystem /p:PrecompileBeforePublish=true /p:EnableUpdateable=false /p:DebugSymbols=true /p:UseMerge=false /p:DeleteAppCodeCompiledFiles=True /p:DeleteExistingFiles=True /p:WDPMergeOption=CreateSeparateAssembly /p:UseFixedNames=true
+
+      - name: Set up PowerShell
+        uses: microsoft/powershell@v1
         with:
-          dotnet-version: '6.0.x'
-      - name: Install dependencies
-        run: dotnet restore
-      - name: Build
-        run: dotnet build
-      - uses: montudor/action-zip@v1
-        with:
-          args: zip -r veracode.zip . -i '*.pdb' '*.dll'
+          inlineScript: |
+            Compress-Archive -Path "\bin\*.dll", "\bin\*.pdb" -DestinationPath veracode.zip
       - name: Publicando Artefato
         uses: actions/upload-artifact@v2
         with:
