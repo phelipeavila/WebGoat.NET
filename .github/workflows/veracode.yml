@@ -14,11 +14,11 @@ jobs:
       - name: Build solution
         run: msbuild /p:Configuration=Release /p:OutputPath=\bin /p:DeployOnBuild=true /p:WebPublishMethod=FileSystem /p:PrecompileBeforePublish=true /p:EnableUpdateable=false /p:DebugSymbols=true /p:UseMerge=false /p:DeleteAppCodeCompiledFiles=True /p:DeleteExistingFiles=True /p:WDPMergeOption=CreateSeparateAssembly /p:UseFixedNames=true
 
-      - name: Set up PowerShell
-        uses: microsoft/powershell@v1
-        with:
-          inlineScript: |
-            Compress-Archive -Path "\bin\*.dll", "\bin\*.pdb" -DestinationPath veracode.zip
+      - name: Compactando arquivos
+        shell: pwsh
+        run: |
+          Compress-Archive -Path "\bin\*.dll", "\bin\*.pdb" -DestinationPath veracode.zip
+            
       - name: Publicando Artefato
         uses: actions/upload-artifact@v2
         with:
