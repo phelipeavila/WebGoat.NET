@@ -54,8 +54,8 @@ jobs:
           criticality: 'VeryHigh'
           appname: '$AppName'
           createsandbox: true
-          filepath: 'verademo.war'
-          deleteIncompleteScan: false
+          filepath: 'veracode.zip'
+          deleteincompletescan: false
           version: ${{ github.run_id }}
 
   Veracode_PipelineScan:
@@ -70,7 +70,7 @@ jobs:
         env:
           VID: ${{ secrets.VID }} # Lembrar de criar as credenciais no Secrets
           VKEY: ${{ secrets.VKEY }}
-          CaminhoArquivo: 'verademo.war'
+          CaminhoArquivo: 'veracode.zip'
         run: |
           curl -sSO https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
           unzip pipeline-scan-LATEST.zip
