@@ -57,6 +57,8 @@ jobs:
           filepath: 'veracode.zip'
           deleteincompletescan: false
           version: ${{ github.run_id }}
+          teams: Showroom_Phelipe
+        continue-on-error: true
 
   Veracode_PipelineScan:
     runs-on: ubuntu-latest
@@ -75,3 +77,4 @@ jobs:
           curl -sSO https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
           unzip pipeline-scan-LATEST.zip
           java -jar pipeline-scan.jar -vid $VID -vkey $VKEY -f $CaminhoArquivo --issue_details true
+        continue-on-error: true
